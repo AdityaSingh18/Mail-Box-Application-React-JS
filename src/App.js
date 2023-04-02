@@ -20,6 +20,7 @@ import UpdateProfile from "./Component/Pages/UpdateProfile";
 import VerifyEmail from "./Component/Pages/VerifyEmail";
 import ForgotPassword from "./Component/Pages/ForgotPassword";
 import './App.css';
+import MailBox from "./Component/Pages/MailBox";
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
         <Route path="/" element={<HeaderSite />}>
           <Route index element={<Login/>}/>
           <Route path="/login" element={<Login />} />
-          
+          <Route path="/mailbox" element={<MailBox/>} />
           <Route path="/Profile" element={<Profile/>} />
           <Route path="updateprofile" element={<UpdateProfile/>}/>
           <Route path="verifyemail" element={<VerifyEmail/>}/>
