@@ -65,6 +65,11 @@ navigate('/login',{replace:true})
     Profile
   </Link>
 </MDBNavbarItem>}
+{isLoggedIn &&<MDBNavbarItem>
+  <Link to='/sentmail' className='nav-link'>
+    Sent Mail
+  </Link>
+</MDBNavbarItem>}
 {isLoggedIn && <MDBNavbarItem>
   <Link to='/forgotpassword' className='nav-link'>
     Forgot Password

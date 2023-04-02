@@ -21,6 +21,7 @@ import VerifyEmail from "./Component/Pages/VerifyEmail";
 import ForgotPassword from "./Component/Pages/ForgotPassword";
 import './App.css';
 import MailBox from "./Component/Pages/MailBox";
+import SentMail from "./Component/Pages/SentMail";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/mailbox" element={<MailBox/>} />
           <Route path="/Profile" element={<Profile/>} />
+          <Route path="/sentmail" element={<SentMail/>} />
           <Route path="updateprofile" element={<UpdateProfile/>}/>
           <Route path="verifyemail" element={<VerifyEmail/>}/>
           <Route path="forgotpassword" element={<ForgotPassword/>}/>

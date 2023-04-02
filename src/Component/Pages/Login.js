@@ -66,6 +66,9 @@ const convertedData = JSON.stringify(data)
 navigate('/mailbox',{replace:true})
 localStorage.setItem('token', convertedData);
 localStorage.setItem('tokenId', data.idToken);
+const emailWithoutDot = email.replace(/\./g, '');
+const emailWithoutAt = emailWithoutDot.replace(/@/g, '');
+localStorage.setItem('email',emailWithoutAt)
 dispatch(authActions.setToken(data.idToken));
 dispatch(authActions.loggedIn(true));
 
