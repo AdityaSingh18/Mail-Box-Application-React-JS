@@ -6,58 +6,62 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import axios from "axios";
 
+
+
 const MailBox = () => {
     const email = localStorage.getItem('email')
   const toRef = useRef();
   const subjectRef = useRef();
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-function sendHandler(event) {
+async function sendHandler(event) {
   event.preventDefault();
-
-  const to = toRef.current.value;
-  const subject = subjectRef.current.value;
-  const description = editorState.getCurrentContent().getPlainText();
-
-  // Extract the relevant data from the `toRef.current` object
-  const toData = {
-    value: toRef.current.value,
-    type: toRef.current.type,
-    name: toRef.current.name,
-    // ... other properties you need
+  if (email=== "") return;
+  const toMail = toRef.current.value;
+  const tOformattedEmail = toMail.replace("@", "").replace(".", "");
+  const mailObj = {
+    from: email,
+    to: toRef.current.value,
+    subject: subjectRef.current.value,
+    body:editorState.getCurrentContent().getPlainText()
   };
 
-  async function sendData() {
-    let url = `https://mail-box-c1116-default-rtdb.firebaseio.com/${email}.json`;
+  const formattedEmail = email.replace("@", "").replace(".", "");
+  const formattedToEmail = toRef.current.value
+    .replace("@", "")
+    .replace(".", "");
 
-    try {
-      const res = await axios.post(url, {
-        method: "PUT",
-        body: JSON.stringify({
-          to: toData, // send the extracted data instead of the entire object
-          subject: subject,
-          description: description,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const url =
+    `${process.env.REACT_APP_FireBaseDataBase}/` +
+      formattedEmail +
+      "/sentMail.json";
+  
+    const response = await fetch(url, {
+      method: "post",
+      body: JSON.stringify(mailObj),
+    });
+  
+    const data = await response.json();
+  
 
-      if (res.ok) {
-    
-        alert("sent the Mail");
-      } else {
-        console.log(res)
-        alert('Error Occured')
-      }
-    } catch (err) {
-      alert(err.message);
-    }
+  if (response.ok) {
+    console.log(toRef.current.value)
+    const url =
+    `${process.env.REACT_APP_FireBaseDataBase}/` +
+     `${tOformattedEmail}`+
+    "/inboxMail.json";
+
+  const response = await fetch(url, {
+    method: "post",
+    body: JSON.stringify(mailObj),
+  });
+
+  const data = await response.json();
+
+
+    if (response.ok) alert("Email sent successfully");
   }
-
-  sendData();
+ 
 }
-
 
 
 

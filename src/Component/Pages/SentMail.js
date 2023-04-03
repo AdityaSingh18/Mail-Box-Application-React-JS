@@ -11,7 +11,7 @@ const SentMail = () => {
   }, []);
 
   async function getMails() {
-    let url = `https://mail-box-c1116-default-rtdb.firebaseio.com/${email}.json`;
+    let url = `https://mail-box-c1116-default-rtdb.firebaseio.com/${email}/sentMail.json`;
 
     try {
       const res = await axios.get(url);
@@ -19,10 +19,13 @@ const SentMail = () => {
       if (res.status == 200) {
         const data = res.data;
 
-        // Parse body property as JSON object
-        const mailList = Object.values(data).map((mail) => ({
-          ...mail,
-          body: JSON.parse(mail.body)
+        // Map over the data and extract the properties
+        const mailList = Object.keys(data).map((key) => ({
+          id: key,
+          body: data[key].body,
+          from: data[key].from,
+          subject: data[key].subject,
+          to: data[key].to,
         }));
 
         setMails(mailList);
@@ -43,9 +46,10 @@ const SentMail = () => {
       ) : (
         mails.map((mail) => (
           <Card className="m-3 p-2" key={mail.id}>
-            <p>To: {mail.body.to && mail.body.to.value}</p>
-            <p>Subject: {mail.body.subject}</p>
-            <p>Description: {mail.body.description}</p>
+            <p>To: {mail.to}</p>
+            <p>Subject: {mail.subject}</p>
+            <p>From: {mail.from}</p>
+            <p>Description: {mail.body}</p>
           </Card>
         ))
       )}
