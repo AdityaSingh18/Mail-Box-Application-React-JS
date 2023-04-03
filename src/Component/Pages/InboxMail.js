@@ -91,6 +91,7 @@ console.log(mails)
                 <Card.Text>{mail.isRead && ' Already seen '}</Card.Text>
               </Card>
             </Link>
+            
           ))
         )}
       </React.Fragment>

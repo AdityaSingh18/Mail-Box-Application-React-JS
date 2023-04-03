@@ -1,13 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { Card } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Card } from "react-bootstrap";
 
 const MailDetails = () => {
     const { id } = useParams();
     const [mail, setMail] = useState(null);
     const email = localStorage.getItem('email')
+
+    const navigate =useNavigate();
   
+
+   async function deleteMail(){
+
+        try {
+            const res = await axios.delete(`https://mail-box-c1116-default-rtdb.firebaseio.com/${email}/inboxMail/${id}.json`);
+      
+            if (res.status == 200) {
+              const data = res.data;
+            console.log(data)
+            alert('Deleted')
+            navigate('/inboxmail')
+        
+    
+            } else {
+              console.log(res);
+              alert("Error Occured");
+            }
+          } catch (err) {
+            alert(err.message);
+          }
+
+    }
     useEffect(() => {
       async function getMail() {
         try {
@@ -71,6 +95,7 @@ const MailDetails = () => {
                   To: {mail.to}
                 </Card.Subtitle>
                 <Card.Text className='m-4'>{mail.body}</Card.Text>
+                <Button onClick={deleteMail}>Delete Mail</Button>
               </Card>
          
       </div>
