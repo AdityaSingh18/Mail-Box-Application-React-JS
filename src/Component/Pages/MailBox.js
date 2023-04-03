@@ -22,7 +22,8 @@ async function sendHandler(event) {
     from: email,
     to: toRef.current.value,
     subject: subjectRef.current.value,
-    body:editorState.getCurrentContent().getPlainText()
+    body:editorState.getCurrentContent().getPlainText(),
+    isRead:false
   };
 
   const formattedEmail = email.replace("@", "").replace(".", "");

@@ -23,6 +23,7 @@ import './App.css';
 import MailBox from "./Component/Pages/MailBox";
 import SentMail from "./Component/Pages/SentMail";
 import InboxMail from "./Component/Pages/InboxMail";
+import MailDetails from "./Component/Pages/MailDetails";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route path="/mailbox" element={<MailBox/>} />
           <Route path="/Profile" element={<Profile/>} />
           <Route path="/inboxmail" element={<InboxMail/>} />
+          <Route path="/mail/:id" element={<MailDetails/>} />
           <Route path="/sentmail" element={<SentMail/>} />
           <Route path="updateprofile" element={<UpdateProfile/>}/>
           <Route path="verifyemail" element={<VerifyEmail/>}/>

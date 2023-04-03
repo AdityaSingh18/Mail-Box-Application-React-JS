@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import axios from "axios";
-
+import { useDispatch, useSelector } from "react-redux";
+import { mailActions } from "../store";
+import { Link } from "react-router-dom";
 const InboxMail = ()=>{
     const email = localStorage.getItem("email");
-    const [mails, setMails] = useState([]);
+    const dispatch =useDispatch();
+
+    const [count,setCount] = useState(0);
+
+    function settingCount(count){
+
+        setCount(count)
+    }
+    
+
+    const mails = useSelector(state=>state.mail.inboxMail);
   
     useEffect(() => {
       getMails();
+      countUnreadMails()
     }, []);
   
     async function getMails() {
@@ -26,9 +39,10 @@ const InboxMail = ()=>{
             from: data[key].from,
             subject: data[key].subject,
             to: data[key].to,
+            isRead:data[key].isRead
           }));
   
-          setMails(mailList);
+           dispatch(mailActions.replaceEmails(mailList))
           alert("Got the Mail");
         } else {
           console.log(res);
@@ -38,19 +52,45 @@ const InboxMail = ()=>{
         alert(err.message);
       }
     }
-  
+
+
+    const countUnreadMails = async () => {
+        const email = localStorage.getItem('email');
+        try {
+          const res = await axios.get(`https://mail-box-c1116-default-rtdb.firebaseio.com/${email}/inboxMail.json`);
+          let count = 0;
+          for (const key in res.data) {
+            if (!res.data[key].isRead) {
+              count++;
+            }
+          }
+          setCount(count);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+
+console.log(mails)
     return (
-      <React.Fragment>
+        <React.Fragment>
+            <h5>Total Unread :{count}</h5>
         {mails.length === 0 ? (
           <p>No mails to show</p>
         ) : (
           mails.map((mail) => (
-            <Card className="m-3 p-2" key={mail.id}>
-              <p>To: {mail.to}</p>
-              <p>Subject: {mail.subject}</p>
-              <p>From: {mail.from}</p>
-              <p>Description: {mail.body}</p>
-            </Card>
+            <Link to={`/mail/${mail.id}`} key={mail.id}>
+              <Card className="m-3 p-2">
+                <Card.Title>{mail.subject}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                  From: {mail.from}
+                </Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">
+                  To: {mail.to}
+                </Card.Subtitle>
+                <Card.Text>{mail.isRead && ' Already seen '}</Card.Text>
+              </Card>
+            </Link>
           ))
         )}
       </React.Fragment>
