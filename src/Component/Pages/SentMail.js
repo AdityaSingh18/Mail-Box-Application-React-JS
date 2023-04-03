@@ -29,7 +29,7 @@ const SentMail = () => {
         }));
 
         setMails(mailList);
-        alert("Got the Mail");
+        console.log('Got the sentBox');
       } else {
         console.log(res);
         alert("Error Occured");

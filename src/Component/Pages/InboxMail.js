@@ -19,7 +19,10 @@ const InboxMail = ()=>{
     const mails = useSelector(state=>state.mail.inboxMail);
   
     useEffect(() => {
-      getMails();
+
+      setInterval(()=>{
+        getMails();
+      },2000)  
       countUnreadMails()
     }, []);
   
@@ -43,7 +46,7 @@ const InboxMail = ()=>{
           }));
   
            dispatch(mailActions.replaceEmails(mailList))
-          alert("Got the Mail");
+          console.log('loaded the inbox');
         } else {
           console.log(res);
           alert("Error Occured");
@@ -75,25 +78,26 @@ console.log(mails)
     return (
         <React.Fragment>
             <h5>Total Unread :{count}</h5>
-        {mails.length === 0 ? (
-          <p>No mails to show</p>
-        ) : (
-          mails.map((mail) => (
-            <Link to={`/mail/${mail.id}`} key={mail.id}>
-              <Card className="m-3 p-2">
-                <Card.Title>{mail.subject}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  From: {mail.from}
-                </Card.Subtitle>
-                <Card.Subtitle className="mb-2 text-muted">
-                  To: {mail.to}
-                </Card.Subtitle>
-                <Card.Text>{mail.isRead && ' Already seen '}</Card.Text>
-              </Card>
-            </Link>
-            
-          ))
-        )}
+            {mails && mails.length > 0 ? (
+  mails.map((mail) => (
+    <Link to={`/mail/${mail.id}`} key={mail.id}>
+      <Card className="m-3 p-2">
+        <Card.Title>{mail.subject}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">
+          From: {mail.from}
+        </Card.Subtitle>
+        <Card.Subtitle className="mb-2 text-muted">
+          To: {mail.to}
+        </Card.Subtitle>
+        <Card.Text>{mail.isRead && ' Already seen '}</Card.Text>
+      </Card>
+    </Link>
+    
+  ))
+) : (
+  <p>No mails to show</p>
+)}
+
       </React.Fragment>
     );
 

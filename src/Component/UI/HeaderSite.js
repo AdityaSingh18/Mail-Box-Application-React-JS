@@ -57,7 +57,7 @@ navigate('/login',{replace:true})
 </MDBNavbarItem>}
 {isLoggedIn && <MDBNavbarItem>
   <Link to='/mailbox' className='nav-link'>
-    MailBox
+    Compose Mail
   </Link>
 </MDBNavbarItem>}
 {isLoggedIn &&<MDBNavbarItem>
